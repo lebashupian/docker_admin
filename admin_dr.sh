@@ -90,3 +90,8 @@ function show_vol() {
 	eval $str
 	exit
 }
+
+[[ $1 == info ]] && {
+	docker inspect $2
+	exit
+}
