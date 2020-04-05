@@ -32,6 +32,14 @@ function show_bonding_port() {
 	done
 }
 
+function show_vol() {
+	docker ps -a --format "{{.Names}}"|sort|while read line
+	do
+		echo --------------$line
+		docker inspect $line|grep -E "Source|Destination"
+	done
+}
+
 [[ $1 == ip ]] && {
 	show_ip
 	exit
@@ -65,9 +73,17 @@ function show_bonding_port() {
 	do
 		port=$port" -p $i"
 	done
+	echo "建立容器和宿主主机的映射关系"
+	vol=''
+	read -p "目录映射：:" vol_mapping
+	for i in $vol_mapping
+	do
+		vol=$vol" -v $i"
+	done
+
 	ping -c 4 -i 0.01 -w 1 $ipaddr > /dev/null && exit_msg "ip是通的，可能被占用"
 	
-	str="docker create -it --name $name --hostname $host_name --net $net_name --ip $ipaddr $port $image_name /bin/bash"
+	str="docker create -it --name $name --hostname $host_name $vol --net $net_name --ip $ipaddr $port $image_name /bin/bash"
 	echo $str
 	eval $str
 	str="docker start $name;docker ps"
