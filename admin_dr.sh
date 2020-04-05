@@ -86,7 +86,7 @@ function show_vol() {
 	str="docker create -it --name $name --hostname $host_name $vol --net $net_name --ip $ipaddr $port $image_name /bin/bash"
 	echo $str
 	eval $str
-	str="docker start $name;docker ps"
+	str="docker start $name;docker exec $name '/usr/sbin/sshd';docker ps"
 	eval $str
 	exit
 }
