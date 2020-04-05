@@ -47,7 +47,7 @@ function show_bonding_port() {
 	read -p "容器名称:"  name
 	read -p "主机名称:"  host_name
 	docker network ls
-	read -p "网络名称:" net_name
+	read -p "桥接网络:" net_name
 	show_ip
 	read -p "ip地址：" ipaddr
 	docker images
@@ -59,7 +59,7 @@ function show_bonding_port() {
 	do
 		port=$port" -p $i"
 	done
-	ping -c 4 -i 0.01 -w 1 $ip > /dev/null 2>&1 && exit_msg "ip是通的，可能被占用"
+	ping -c 4 -i 0.01 -w 1 $ipaddr > /dev/null && exit_msg "ip是通的，可能被占用"
 	
 	str="docker create -it --name $name --hostname $host_name --net $net_name --ip $ipaddr $port $image_name /bin/bash"
 	echo $str
