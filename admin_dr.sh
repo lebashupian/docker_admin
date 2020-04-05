@@ -70,5 +70,7 @@ function show_bonding_port() {
 	str="docker create -it --name $name --hostname $host_name --net $net_name --ip $ipaddr $port $image_name /bin/bash"
 	echo $str
 	eval $str
+	str="docker start $name;docker ps"
+	eval $str
 	exit
 }
