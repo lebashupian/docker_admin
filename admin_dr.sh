@@ -43,16 +43,22 @@ function show_bonding_port() {
 	exit
 }
 [[ $1 == create || $1 == c ]] && {
+	echo "#######已经存在的容器列表："
 	docker ps -a --format "{{.Names}}"
 	read -p "容器名称:"  name
 	read -p "主机名称:"  host_name
+	echo "#######系统中定义的网络："
 	docker network ls
 	read -p "桥接网络:" net_name
+	echo "#######容器中使用的ip地址："
 	show_ip
 	read -p "ip地址：" ipaddr
+	echo "#######镜像列表："
 	docker images
 	read -p "镜像名称:" image_name
+	echo "目前存在的映射关系："
 	show_bonding_port
+	echo "设定方式 宿主ip(可以省略):宿主port:容器port"
 	read -p "端口映射:" port_mapping
 	port=''
 	for i in $port_mapping
