@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 source /etc/profile
 source ~/.bash_profile
 stty erase '^H'
