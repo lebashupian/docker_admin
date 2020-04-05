@@ -6,7 +6,7 @@ stty erase '^H'
 
 function exit_msg() {
 	echo "$1"
-	exit 111
+	exit 1
 }
 
 [[ $1 == help || $1 == '' ]] && {
