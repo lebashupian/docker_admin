@@ -9,6 +9,7 @@ image=img/centos75:new
 #https://www.cnblogs.com/fuyuteng/p/8847331.html
 
 [[ $1 == del ]] && {
+dmidecode |grep 'VMware Virtual Platform' || exit 
 cp -f /etc/hosts /tmp/hosts/hosts.`date +%F-%T`
 sed -i /new/d /etc/hosts
 for line in `docker ps -a --format "{{.Names}}"`
