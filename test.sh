@@ -7,19 +7,20 @@
 image=img/centos75:new
 
 #https://www.cnblogs.com/fuyuteng/p/8847331.html
+
+[[ $1 == del ]] && {
 cp -f /etc/hosts /tmp/hosts/hosts.`date +%F-%T`
 sed -i /new/d /etc/hosts
 for line in `docker ps -a --format "{{.Names}}"`
 do
-	{
-		docker stop $line -t 1  && echo "stop $line"
-		docker rm $line && echo "rm $line"			
-	} &
+        {
+                docker stop $line -t 1  && echo "stop $line"
+                docker rm $line && echo "rm $line"
+        } &
 done
 
 wait
-
-[[ $1 == del ]] && exit
+}
 
 
 
