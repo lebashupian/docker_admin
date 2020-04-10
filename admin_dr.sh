@@ -73,7 +73,7 @@ function show_vol() {
 	do
 		port=$port" -p $i"
 	done
-	echo "建立容器和宿主主机的映射关系"
+	echo "宿主主机和容器的存储映射关系 (宿主:容器)"
 	vol=''
 	read -p "目录映射：:" vol_mapping
 	for i in $vol_mapping
