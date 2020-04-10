@@ -12,8 +12,10 @@ function exit_msg() {
 [[ $1 == help || $1 == '' ]] && {
 	echo "help 显示帮助"
 	echo "net 查看docker网络列表,第二个参数可以跟具体的网络名称，会看到这个网络更为详细的信息"
-	echo "create 创建主机"
-	echo ""
+	echo "create c 创建主机"
+	echo "show_ip si 展示所有容器的ip分配"
+	echo "show_bonding_port sbp 展示容器和主机的绑定信息"
+	echo "show_vol sv 显示主机目录和容器目录的映射"
 	exit
 }
 
@@ -111,7 +113,7 @@ function show_vol() {
 [[ $1 == export ]] && {
 	[[ -z $2 ]] && exit_msg "请输入容器名称"
 	[[ -z $3 ]] && exit_msg "请输入导出文件名称"
-	docker export $2 > $3.tar
+	docker export $2 > $3.export
 	exit
 }
 
@@ -120,7 +122,19 @@ function show_vol() {
 	[[ -z $2 ]] && exit_msg "请输入文件名称"
 	[[ ! -f $2 ]] && exit_msg "$2 这个文件不存在"
 	[[ -z $3 ]] && exit_msg "完全的docker镜像名称"
-	cat $2 | docker import - xitong/centos:dingzhi01 
+	cat $2 | docker import - $3
 	exit
 }
+
+[[ $1 == save ]] && {
+	[[ -z $2 ]] && exit_msg "请输入导出的文件名称"
+	[[ -z $3 ]] && exit_msg "请输入完整镜像名称"
+	docker save -o $2.save $3
+	exit	
+}
+
+[[ $1 == load ]] && {
+	[[ -z $2 ]] && exit_msg "请输入导出的文件名称"
+	docker load --input $2
+	exit
 }
