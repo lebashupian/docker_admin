@@ -25,11 +25,21 @@ function show_ip() {
 	done	
 }
 
+[[ $1 == show_ip || $1 == si ]] && {
+	show_ip
+	exit 
+}
+
 function show_bonding_port() {
 	docker ps -a --format "{{.Names}}"|sort|while read line
 	do
 		docker port $line
 	done
+}
+
+[[ $1 == show_bonding_port || $1 == sbp ]] && {
+	show_bonding_port
+	exit 
 }
 
 function show_vol() {
@@ -40,9 +50,9 @@ function show_vol() {
 	done
 }
 
-[[ $1 == ip ]] && {
-	show_ip
-	exit
+[[ $1 == show_vol || $1 == sv ]] && {
+	show_vol
+	exit 
 }
 
 [[ $1 == net ]] && {
