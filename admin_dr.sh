@@ -84,9 +84,10 @@ function show_vol() {
 	ping -c 4 -i 0.01 -w 1 $ipaddr > /dev/null && exit_msg "ip是通的，可能被占用"
 	
 	str="docker create -it --name $name --hostname $host_name $vol --net $net_name --ip $ipaddr $port $image_name /bin/bash"
-	echo $str
+	echo $str|tee -a /tmp/admin_dr.log
 	eval $str
 	str="docker start $name;docker exec $name '/usr/sbin/sshd';docker ps"
+	echo $str|tee -a /tmp/admin_dr.log
 	eval $str
 	exit
 }
