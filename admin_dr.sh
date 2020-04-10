@@ -95,3 +95,21 @@ function show_vol() {
 	docker inspect $2
 	exit
 }
+
+
+[[ $1 == export ]] && {
+	[[ -z $2 ]] && exit_msg "请输入容器名称"
+	[[ -z $3 ]] && exit_msg "请输入导出文件名称"
+	docker export $2 > $3.tar
+	exit
+}
+
+
+[[ $1 == import ]] && {
+	[[ -z $2 ]] && exit_msg "请输入文件名称"
+	[[ ! -f $2 ]] && exit_msg "$2 这个文件不存在"
+	[[ -z $3 ]] && exit_msg "完全的docker镜像名称"
+	cat $2 | docker import - xitong/centos:dingzhi01 
+	exit
+}
+}
