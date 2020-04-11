@@ -145,5 +145,6 @@ function show_vol() {
 
 
 ##########接管其他命令
-echo "docker $*" |tee -a /tmp/admin_dr.log
+$str="docker $*"
+echo `date +%F-%T`" "$str|tee -a /tmp/admin_dr.log
 eval "docker $*"
