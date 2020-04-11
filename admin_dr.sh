@@ -11,7 +11,7 @@ function exit_msg() {
 
 [[ $1 == help || $1 == '' ]] && {
 	echo "help 显示帮助，以下都是自定义命令。同时脚本可以接受所有的docke命令"
-	echo "net 查看docker网络列表,第二个参数可以跟具体的网络名称，会看到这个网络更为详细的信息"
+	echo "net show_net sn查看ocker网络列表,第二个参数可以跟具体的网络名称，会看到这个网络更为详细的信息"
 	echo "create c 创建主机"
 	echo "show_ip si 展示所有容器的ip分配"
 	echo "show_bonding_port sbp 展示容器和主机的绑定信息"
