@@ -16,6 +16,10 @@ function exit_msg() {
 	echo "show_ip si 展示所有容器的ip分配"
 	echo "show_bonding_port sbp 展示容器和主机的绑定信息"
 	echo "show_vol sv 显示主机目录和容器目录的映射"
+	echo "export 导出容器"
+	echo "import 导入容器"
+	echo "save   导出镜像"
+	echo "load   导入镜像"
 	exit
 }
 
@@ -57,7 +61,7 @@ function show_vol() {
 	exit 
 }
 
-[[ $1 == net ]] && {
+[[ $1 == net || $1 == show_net || $1 == sn ]] && {
 	docker network ls
 	[[ ! -z $2 ]] && docker network inspect $2
 	exit
