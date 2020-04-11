@@ -20,8 +20,6 @@ function exit_msg() {
 	echo "import 导入容器"
 	echo "save   导出镜像"
 	echo "load   导入镜像"
-	echo '----------以下是docker原生帮助-------------'
-	docker help
 	exit
 }
 
