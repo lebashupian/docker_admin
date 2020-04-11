@@ -142,3 +142,7 @@ function show_vol() {
 	docker load --input $2
 	exit
 }
+
+
+##########接管其他命令
+docker $1 
