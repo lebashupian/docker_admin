@@ -21,6 +21,7 @@ do
 done
 
 wait
+exit
 }
 
 
