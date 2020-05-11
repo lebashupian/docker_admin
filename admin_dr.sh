@@ -147,6 +147,7 @@ function show_vol() {
 [[ $1 == always_restart ]] && {
 	[[ -z $2 ]] && exit_msg "第二个参数是容器名字"
        docker container update --restart=always $2
+	exit
 }
 
 
