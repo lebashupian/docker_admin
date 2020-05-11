@@ -20,6 +20,7 @@ function exit_msg() {
 	echo "import 导入容器"
 	echo "save   导出镜像"
 	echo "load   导入镜像"
+	echo "always_restart 容器名称  随服务启动"
 	exit
 }
 
@@ -141,6 +142,11 @@ function show_vol() {
 	[[ -z $2 ]] && exit_msg "请输入导出的文件名称"
 	docker load --input $2
 	exit
+}
+
+[[ $1 == always_restart ]] && {
+	[[ -z $2 ]] && exit_msg "第二个参数是容器名字"
+       docker container update --restart=always $2
 }
 
 
