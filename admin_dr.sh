@@ -150,6 +150,10 @@ function show_vol() {
 	exit
 }
 
+[[ $1 == bash ]] && {
+	[[ -z $2 ]] && exit_msg "第二个参数是容器名字"
+	docker exec $2 -it /bin/bash
+}
 
 ##########接管其他命令
 str="docker $*"
