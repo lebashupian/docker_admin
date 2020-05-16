@@ -91,11 +91,11 @@ function show_vol() {
 	do
 		port=$port" -p $i"
 	done
-	echo "宿主主机和容器的存储映射关系 (宿主:容器 宿主:容器 空格隔开 下一组配置),默认host:/tmp/ --> docker:/mnt"
+	echo "宿主主机和容器的存储映射关系 (宿主:容器 宿主:容器 空格隔开 下一组配置),默认host:/docker_data/all_share --> docker:/mnt"
 	vol=''
 	read -p "目录映射" vol_mapping
 	#默认把宿主的tmp共享给docker的mnt
-	vol_mapping=${vol_mapping:-/tmp:/mnt}
+	vol_mapping=${vol_mapping:-/docker_data/all_share:/mnt}
 	for i in $vol_mapping
 	do
 		vol=$vol" -v $i"
