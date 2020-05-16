@@ -101,14 +101,26 @@ function show_vol() {
 		vol=$vol" -v $i"
 	done
 
+	read -p "是否启动sshd (Y|n)" sshd_service
+	sshd_service=${sshd_service:-y}
+	read -p "容器是否随docker服务启动(y|N)" auto_start
+	auto_start=${auto_start:-n}
+
 	ping -c 4 -i 0.01 -w 1 $ipaddr > /dev/null && exit_msg "ip是通的，可能被占用"
 	
-	str="docker create -it --name $name --hostname $host_name $vol --net $net_name --ip $ipaddr $port $image_name /usr/sbin/init"
+	[[ $auto_start == y || $auto_start == Y ]] && {
+		auto_start_str="--restart=always"
+	}
+
+	str="docker create -it --name $name $auto_start_str --hostname $host_name $vol --net $net_name --ip $ipaddr $port $image_name /usr/sbin/init"
 	echo $str|tee -a /tmp/admin_dr.log
 	eval $str
 	str="docker start $name;docker exec $name '/usr/sbin/sshd';docker ps"
-	echo $str|tee -a /tmp/admin_dr.log
-	eval $str
+	[[ $sshd_service == y || $sshd_service == Y ]] && {
+		echo $str|tee -a /tmp/admin_dr.log
+		eval $str
+	}
+
 	exit
 }
 
