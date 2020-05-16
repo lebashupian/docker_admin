@@ -81,11 +81,11 @@ function show_vol() {
 	read -p "ip地址：" ipaddr
 	echo "#######镜像列表："
 	docker images
-	read -p "镜像名称:" image_name
+	read -p "镜像名称" image_name
 	echo "目前存在的映射关系："
 	show_bonding_port
 	echo "设定方式 宿主ip(可以省略):宿主port:容器port 空格隔开 下一组配置"
-	read -p "端口映射:" port_mapping
+	read -p "端口映射" port_mapping
 	port=''
 	for i in $port_mapping
 	do
@@ -93,7 +93,7 @@ function show_vol() {
 	done
 	echo "宿主主机和容器的存储映射关系 (宿主:容器 宿主:容器 空格隔开 下一组配置),默认host:/tmp/ --> docker:/mnt"
 	vol=''
-	read -p "目录映射：:" vol_mapping
+	read -p "目录映射" vol_mapping
 	#默认把宿主的tmp共享给docker的mnt
 	vol_mapping=${vol_mapping:-/tmp:/mnt}
 	for i in $vol_mapping
