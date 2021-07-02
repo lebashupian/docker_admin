@@ -192,8 +192,8 @@ function show_vol() {
 		shift 2
 		for i in `awk -F "@@@" '$1 == "'$alias_name'" {print $2}' container_list.txt`
 		do
-			echo container name : $i $@
-
+			echo container name : $i
+			docker exec $i $@
 		done
 		exit
 	} || {
