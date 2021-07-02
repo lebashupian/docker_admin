@@ -202,6 +202,30 @@ function show_vol() {
 	}
 }
 
+[[ $1 == loopcp ]] && {
+
+	[[ $2 == '' ]] && {
+		[[ -f container_list.txt ]] || {
+			echo "#es@@@es01 es02" >> container_list.txt
+			echo container_list.txt 文件不存在已经创建
+		}
+		cat container_list.txt|grep -v ^#
+		exit
+	}
+	[[ -f container_list.txt ]] && {
+		alias_name=$2
+		for i in `awk -F "@@@" '$1 == "'$alias_name'" {print $2}' container_list.txt`
+		do
+			echo container name : $i
+			docker cp $3 $i:$4
+		done
+		exit
+	} || {
+		echo "#es@@@es01 es02" >> container_list.txt
+		echo "列表文件不存在,已经创建"
+	}
+}
+
 ##########接管其他命令
 str="docker $*"
 echo `date +%F-%T`" "$str|tee -a /tmp/admin_dr.log
