@@ -1,6 +1,11 @@
 #!/bin/bash 
 source /etc/profile
 source ~/.bash_profile
+
+DIR="$( cd "$( dirname "$0"  )" && pwd  )"
+
+cd $DIR
+
 stty erase '^H'
 
 
@@ -169,6 +174,28 @@ function show_vol() {
 	[[ -z $2 ]] && exit_msg "第二个参数是容器名字"
 	docker exec -it $2 /bin/bash
 	exit
+}
+
+[[ $1 == loopdo ]] && {
+
+	[[ $2 == '' ]] && {
+		[[ -f container_list.txt ]] || {
+			echo "#es@@@es01 es02" >> container_list.txt
+			echo container_list.txt 文件不存在已经创建
+		}
+		cat container_list.txt|grep -v ^#
+		exit
+	}
+	[[ -f container_list.txt ]] && {
+		for i in `awk -F "@@@" '$1 == "'$2'" {print $2}' container_list.txt`
+		do
+			echo container name : $i
+		done
+		exit
+	} || {
+		echo "#es@@@es01 es02" >> container_list.txt
+		echo "列表文件不存在,已经创建"
+	}
 }
 
 ##########接管其他命令
