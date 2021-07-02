@@ -27,6 +27,7 @@ function exit_msg() {
 	echo "load   导入镜像"
 	echo "always_restart 容器名称  随服务启动"
 	echo "bash   启动一个bash来和docker交互"
+	echo "loopdo 跟一个主机列表别名, 别名定义在container_list.txt文件中"
 	exit
 }
 
@@ -187,9 +188,12 @@ function show_vol() {
 		exit
 	}
 	[[ -f container_list.txt ]] && {
-		for i in `awk -F "@@@" '$1 == "'$2'" {print $2}' container_list.txt`
+		alias_name=$2
+		shift 2
+		for i in `awk -F "@@@" '$1 == "'$alias_name'" {print $2}' container_list.txt`
 		do
-			echo container name : $i
+			echo container name : $i $@
+
 		done
 		exit
 	} || {
