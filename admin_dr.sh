@@ -18,6 +18,7 @@ function exit_msg() {
 	echo "help 显示帮助，以下都是自定义命令。同时脚本可以接受所有的docke命令"
 	echo "net show_net sn查看ocker网络列表,第二个参数可以跟具体的网络名称，会看到这个网络更为详细的信息"
 	echo "create c 创建主机"
+	echo "create_net cn 创建网络" 
 	echo "show_ip si 展示所有容器的ip分配"
 	echo "show_bonding_port sbp 展示容器和主机的绑定信息"
 	echo "show_vol sv 显示主机目录和容器目录的映射"
@@ -80,13 +81,42 @@ function show_vol() {
 	read -p "容器名称:"  name
 	read -p "主机名称:"  host_name
 	echo "#######系统中定义的网络："
-	docker network ls
-	read -p "桥接网络:" net_name
-	echo "#######容器中使用的ip地址："
-	show_ip
+	#docker network ls
+
+	select net_name in `	
+	docker network ls|grep [a-z0-9]|while read line  
+	do
+	echo $line|awk '{print $2}'
+	done|while read line
+	do
+	docker network inspect $line|grep -E "Name|Subnet"|head -n 2|awk -F ":" '{print $2}'|xargs|sed 's/ //g'|awk -F "," '{print $1"@@"$2}'
+	done
+	`
+	do
+	net_name=`echo $net_name|awk -F "@@" '{print $1}'`
+	break
+	done
+	
+	
+	
+	#read -p "桥接网络:" net_name
+	#echo "#######容器中使用的ip地址："
+	#show_ip
+	
+	echo ======================================================
+	docker network inspect "$net_name"|grep -E "Name|IPv4Address"
+	echo ======================================================
+	
 	read -p "ip地址：" ipaddr
 	echo "#######镜像列表："
-	docker images
+	#docker images
+	select image_name in `docker images|awk '{print $1":"$2}'|grep -v "REPOSITORY:TAG"`
+	do
+		echo $image_name
+		break
+	done
+
+
 	read -p "镜像名称" image_name
 	echo "目前存在的映射关系："
 	show_bonding_port
@@ -129,6 +159,23 @@ function show_vol() {
 
 	exit
 }
+
+[[ $1 == create_net || $1 == cn ]] && {
+	echo =====================================================
+	docker network ls|grep [a-z0-9]|while read line  
+	do
+	echo $line|awk '{print $2}'
+	done|while read line
+	do
+	docker network inspect $line|grep -E "Name|Subnet"|head -n 2|awk -F ":" '{print $2}'|xargs|sed 's/ //g'|awk -F "," '{print $1"@@"$2}'
+	done
+	echo =====================================================
+	read -p "网段/掩码:" netinfo
+	read -p "名称:" netname
+	docker network create --subnet $netinfo $netname
+	exit
+}
+
 
 [[ $1 == info ]] && {
 	docker inspect $2
@@ -225,6 +272,10 @@ function show_vol() {
 		echo "列表文件不存在,已经创建"
 	}
 }
+########################################################
+
+
+
 
 ##########接管其他命令
 str="docker $*"
