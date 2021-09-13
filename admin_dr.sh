@@ -103,7 +103,8 @@ function show_vol() {
 	#echo "#######容器中使用的ip地址："
 	#show_ip
 	
-	echo ======================================================
+	echo =======================网络信息============================
+	
 	docker network inspect "$net_name"|grep -E "Name|IPv4Address"
 	echo ======================================================
 	
@@ -117,7 +118,7 @@ function show_vol() {
 	done
 
 
-	read -p "镜像名称" image_name
+	#read -p "镜像名称" image_name
 	echo "目前存在的映射关系："
 	show_bonding_port
 	echo "设定方式 宿主ip(可以省略):宿主port:容器port 空格隔开 下一组配置"
@@ -136,6 +137,11 @@ function show_vol() {
 	do
 		vol=$vol" -v $i"
 	done
+	
+	#
+	read -p "启动命令(default:/usr/sbin/init) " runcmd
+	runcmd=${runcmd:/usr/sbin/init}
+	
 
 	read -p "是否启动sshd (Y|n)" sshd_service
 	sshd_service=${sshd_service:-y}
