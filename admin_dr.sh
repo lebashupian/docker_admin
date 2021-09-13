@@ -140,7 +140,7 @@ function show_vol() {
 	
 	#
 	read -p "启动命令(default:/usr/sbin/init) " runcmd
-	runcmd=${runcmd:/usr/sbin/init}
+	runcmd=${runcmd:="/usr/sbin/init"}
 	
 
 	read -p "是否启动sshd (Y|n)" sshd_service
