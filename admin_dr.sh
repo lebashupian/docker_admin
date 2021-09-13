@@ -139,7 +139,7 @@ function show_vol() {
 	done
 	
 	#
-	read -p "启动命令(default:/usr/sbin/init) " runcmd
+	read -p "启动命令(default /usr/sbin/init):" runcmd
 	runcmd=${runcmd:="/usr/sbin/init"}
 	
 
