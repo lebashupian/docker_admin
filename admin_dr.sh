@@ -154,7 +154,7 @@ function show_vol() {
 		auto_start_str="--restart=always"
 	}
 
-	str="docker create -it --name $name $auto_start_str --hostname $host_name $vol --net $net_name --ip $ipaddr $port $image_name /usr/sbin/init"
+	str="docker create -it --name $name $auto_start_str --hostname $host_name $vol --net $net_name --ip $ipaddr $port $image_name $runcmd"
 	echo $str|tee -a /tmp/admin_dr.log
 	eval $str
 	str="docker start $name;docker exec $name '/usr/sbin/sshd';docker ps"
