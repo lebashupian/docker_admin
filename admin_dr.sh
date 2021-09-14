@@ -117,6 +117,11 @@ function show_vol() {
 		break
 	done
 
+	[[ -z "$image_name" ]] && {
+		echo "镜像不存在,无法选择,请导入images"
+		exit 1
+	}	
+
 
 	#read -p "镜像名称" image_name
 	echo "目前存在的映射关系："
